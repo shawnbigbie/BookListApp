@@ -1,36 +1,36 @@
-// Book Class: Represents a Book
-class Book {
-    constructor(title, author, isbn) {
-      this.title = title;
-      this.author = author;
-      this.isbn = isbn;
+// Contact Class: Represents a Contact
+class Contact {
+    constructor(CName, CAddress, CNum) {
+      this.CName = CName;
+      this.CAddress = CAddress;
+      this.CNum = CNum;
     }
   }
   
   // UI Class: Handle UI Tasks
   class UI {
-    static displayBooks() {
-      const books = Store.getBooks();
+    static displayContacts() {
+      const contacts = Store.getContacts();
   
-      books.forEach((book) => UI.addBookToList(book));
+      contacts.forEach((contact) => UI.addContactToList(contact));
     }
   
-    static addBookToList(book) {
-      const list = document.querySelector('#book-list');
+    static addContactToList(contact) {
+      const list = document.querySelector('#contact-list');
   
       const row = document.createElement('tr');
   
       row.innerHTML = `
-        <td>${book.title}</td>
-        <td>${book.author}</td>
-        <td>${book.isbn}</td>
+        <td>${contact.CName}</td>
+        <td>${contact.CAddress}</td>
+        <td>${contact.CNum}</td>
         <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
       `;
   
       list.appendChild(row);
     }
   
-    static deleteBook(el) {
+    static deleteContact(el) {
       if(el.classList.contains('delete')) {
         el.parentElement.parentElement.remove();
       }
@@ -41,7 +41,7 @@ class Book {
       div.className = `alert alert-${className}`;
       div.appendChild(document.createTextNode(message));
       const container = document.querySelector('.container');
-      const form = document.querySelector('#book-form');
+      const form = document.querySelector('#contact-form');
       container.insertBefore(div, form);
   
       // Vanish in 3 seconds
@@ -49,86 +49,86 @@ class Book {
     }
   
     static clearFields() {
-      document.querySelector('#title').value = '';
-      document.querySelector('#author').value = '';
-      document.querySelector('#isbn').value = '';
+      document.querySelector('#CName').value = '';
+      document.querySelector('#CAddress').value = '';
+      document.querySelector('#CNum').value = '';
     }
   }
   
   // Store Class: Handles Storage
   class Store {
-    static getBooks() {
-      let books;
-      if(localStorage.getItem('books') === null) {
-        books = [];
+    static getContacts() {
+      let contacts;
+      if(localStorage.getItem('contacts') === null) {
+        contacts = [];
       } else {
-        books = JSON.parse(localStorage.getItem('books'));
+        contacts = JSON.parse(localStorage.getItem('contacts'));
       }
   
-      return books;
+      return contacts;
     }
   
-    static addBook(book) {
-      const books = Store.getBooks();
-      books.push(book);
-      localStorage.setItem('books', JSON.stringify(books));
+    static addContact(contact) {
+      const contacts = Store.getcontacts();
+      contacts.push(contact);
+      localStorage.setItem('contacts', JSON.stringify(contacts));
     }
   
-    static removeBook(isbn) {
-      const books = Store.getBooks();
+    static removeContact(CNum) {
+      const contacts = Store.getContacts();
   
-      books.forEach((book, index) => {
-        if(book.isbn === isbn) {
-          books.splice(index, 1);
+      contacts.forEach((contact, index) => {
+        if(contact.CNum === CNum) {
+          contacts.splice(index, 1);
         }
       });
   
-      localStorage.setItem('books', JSON.stringify(books));
+      localStorage.setItem('contacts', JSON.stringify(contacts));
     }
   }
   
-  // Event: Display Books
-  document.addEventListener('DOMContentLoaded', UI.displayBooks);
+  // Event: Display Contacts
+  document.addEventListener('DOMContentLoaded', UI.displayContacts);
   
-  // Event: Add a Book
-  document.querySelector('#book-form').addEventListener('submit', (e) => {
+  // Event: Add a Contact
+  document.querySelector('#contact-form').addEventListener('submit', (e) => {
     // Prevent actual submit
     e.preventDefault();
   
     // Get form values
-    const title = document.querySelector('#title').value;
-    const author = document.querySelector('#author').value;
-    const isbn = document.querySelector('#isbn').value;
+    const CName = document.querySelector('#CName').value;
+    const CAddress = document.querySelector('#CAddress').value;
+    const CNum = document.querySelector('#CNum').value;
   
     // Validate
-    if(title === '' || author === '' || isbn === '') {
+    if(CName === '' || CAddress === '' || CNum === '') {
       UI.showAlert('Please fill in all fields', 'danger');
     } else {
-      // Instatiate book
-      const book = new Book(title, author, isbn);
+      // Instatiate Contact
+      const contact = new Contact(CName, CAddress, CNum);
   
-      // Add Book to UI
-      UI.addBookToList(book);
+      // Add Contact to UI
+      UI.addContactToList(contact);
   
-      // Add book to store
-      Store.addBook(book);
+      // Add Contact to store
+      Store.addContact(contact);
   
       // Show success message
-      UI.showAlert('Book Added', 'success');
+      UI.showAlert('Contact Added', 'success');
   
       // Clear fields
       UI.clearFields();
     }
   });
   
-  // Event: Remove a Book
-  document.querySelector('#book-list').addEventListener('click', (e) => {
-    // Remove book from UI
-    UI.deleteBook(e.target);
+  // Event: Remove a Contact
+  document.querySelector('#contact-list').addEventListener('click', (e) => {
+    // Remove Contact from UI
+    UI.deleteContact(e.target);
   
-    // Remove book from store
-    Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+    // Remove Contact from store
+    Store.removeContact(e.target.parentElement.previousElementSibling.textContent);
   
     // Show success message
-    UI.showAlert('Book Removed', 'success');
+    UI.showAlert('Contact Removed', 'success');
   });

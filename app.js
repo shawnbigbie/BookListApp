@@ -90,7 +90,7 @@ class Contact {
   // Event: Display Contacts
   document.addEventListener('DOMContentLoaded', UI.displayContacts);
   
-  // Event: Add a Contact
+  // Event: Add a New Contact
   document.querySelector('#contact-form').addEventListener('submit', (e) => {
     // Prevent actual submit
     e.preventDefault();
@@ -121,7 +121,7 @@ class Contact {
     }
   });
   
-  // Event: Remove a Contact
+  // Event: Remove Contact
   document.querySelector('#contact-list').addEventListener('click', (e) => {
     // Remove Contact from UI
     UI.deleteContact(e.target);
